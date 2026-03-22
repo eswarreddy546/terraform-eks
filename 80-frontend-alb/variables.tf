@@ -6,10 +6,10 @@ variable "environment" {
     default = "dev"
 }
 
-variable "zone_id" {
-    default = "Z0948150OFPSYTNVYZOY"
+variable "domain_name" {
+    default = "eswar.xyz"
 }
 
-variable "domain_name" {
-    default = "daws86s.fun"
+variable "zone_id" {
+    default = "Z00224221HVTOMR4RK7YI"
 }
