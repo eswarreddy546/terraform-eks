@@ -7,9 +7,9 @@ variable "environment" {
 }
 
 variable "domain_name" {
-    default = "daws86s.fun"
+    default = "eswar.xyz"
 }
 
 variable "zone_id" {
-    default = "Z0948150OFPSYTNVYZOY"
+    default = "Z00224221HVTOMR4RK7YI"
 }
