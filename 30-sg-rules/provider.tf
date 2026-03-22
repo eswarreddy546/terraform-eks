@@ -7,7 +7,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "eshurr "
+    bucket = "eshurr"
     key    = "roboshop-eks-sg-rules"
     region = "us-east-1"
     encrypt = true
