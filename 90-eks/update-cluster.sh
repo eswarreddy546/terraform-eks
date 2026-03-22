@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Auto-fix CRLF issue if present
+# Auto-fix CRLF issue
 sed -i 's/\r$//' "$0" 2>/dev/null
 
 #########
@@ -12,7 +12,7 @@ Y="\e[33m"
 N="\e[0m"
 
 #########
-# Cluster Config
+# Config
 #########
 CLUSTER_NAME="roboshop-dev"
 AWS_REGION="us-east-1"
@@ -35,7 +35,7 @@ if [ "$#" -ne 1 ]; then
 fi
 
 #########
-# Validate AWS access
+# AWS check
 #########
 aws sts get-caller-identity &>/dev/null
 if [ $? -ne 0 ]; then
@@ -44,7 +44,7 @@ if [ $? -ne 0 ]; then
 fi
 
 #########
-# Helper function
+# Helper
 #########
 VALIDATE() {
   if [ "${1:-1}" -ne 0 ]; then
@@ -56,7 +56,7 @@ VALIDATE() {
 }
 
 #########
-# Fetch Addons
+# Fetch addons
 #########
 ADDONS=$(aws eks list-addons \
   --cluster-name "$CLUSTER_NAME" \
@@ -65,7 +65,7 @@ ADDONS=$(aws eks list-addons \
   --output text)
 
 #########
-# Get current version
+# Current version
 #########
 CURRENT_CP_VERSION=$(aws eks describe-cluster \
   --name "$CLUSTER_NAME" \
@@ -149,7 +149,7 @@ if [[ $COUNT -eq $MAX_RETRIES ]]; then
 fi
 
 #########
-# Addon Functions
+# Addon helpers
 #########
 addon_version() {
   aws eks describe-addon \
@@ -169,11 +169,15 @@ addon_status() {
     --output text 2>/dev/null || echo "MISSING"
 }
 
+# ✅ FIXED: compatibility-aware version selection
 latest_addon_version() {
+  local addon="$1"
+  local cp_ver="$2"
+
   aws eks describe-addon-versions \
-    --addon-name "$1" \
+    --addon-name "$addon" \
     --region "$AWS_REGION" \
-    --query "addons[].addonVersions[].addonVersion" \
+    --query "addons[].addonVersions[?compatibilities[?clusterVersion=='${cp_ver}']].addonVersion" \
     --output text | tr '\t' '\n' | sort -V | tail -n1
 }
 
@@ -182,10 +186,10 @@ latest_addon_version() {
 #########
 for addon in $ADDONS; do
   CURRENT=$(addon_version "$addon")
-  LATEST=$(latest_addon_version "$addon")
+  LATEST=$(latest_addon_version "$addon" "$EKS_TARGET_VERSION")
 
   if [[ -z "$LATEST" ]]; then
-    echo -e "${R}No version found for $addon${N}" | tee -a "$LOG_FILE"
+    echo -e "${R}No compatible version found for $addon${N}" | tee -a "$LOG_FILE"
     continue
   fi
 
