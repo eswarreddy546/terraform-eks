@@ -1,15 +1,15 @@
 terraform {
   required_providers {
     aws = {
-      source = "hashicorp/aws"
-      version = "6.23.0"
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
     }
   }
 
   backend "s3" {
-    bucket = "eshurr"
-    key    = "roboshop-dev-eks"
-    region = "us-east-1"
+    bucket  = "eshurr"
+    key     = "roboshop-dev-eks"
+    region  = "us-east-1"
     encrypt = true
   }
 }
