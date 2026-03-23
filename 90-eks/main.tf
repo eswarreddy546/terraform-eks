@@ -4,7 +4,7 @@ module "eks" {
 
   name               = local.common_name_suffix
   # kubernetes_version = "1.33"
-  kubernetes_version = var.eks_version
+  kubernetes_version = "1.32"
 
   addons = {
     coredns                = {}
@@ -74,13 +74,13 @@ module "eks" {
       max_size     = 10
       desired_size = 2
 
-      # taints = {
-      #   upgrade = {
-      #     key = "upgrade"
-      #     value = "true"
-      #     effect = "NO_SCHEDULE"
-      #   }
-      # }
+      taints = {
+        upgrade = {
+          key = "upgrade"
+          value = "true"
+          effect = "NO_SCHEDULE"
+        }
+      }
 
       labels = {
         nodegroup = "green"

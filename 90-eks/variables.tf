@@ -14,9 +14,9 @@ variable "zone_id" {
     default = "Z00224221HVTOMR4RK7YI"
 }
 
- variable "eks_version" {
+#  variable "eks_version" {
 
- }
+#  }
 
 variable "eks_nodegroup_blue_version" {
 
