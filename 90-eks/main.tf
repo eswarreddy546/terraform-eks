@@ -4,7 +4,7 @@ module "eks" {
 
   name               = local.common_name_suffix
   # kubernetes_version = "1.33"
-  kubernetes_version = "1.32"
+  kubernetes_version = "1.33"
 
   addons = {
     coredns                = {}
