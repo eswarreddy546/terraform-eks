@@ -43,16 +43,16 @@ module "eks" {
 
       ami_type           = "AL2023_x86_64_STANDARD"
       kubernetes_version = var.eks_nodegroup_blue_version
-      instance_types     = ["m5.xlarge"]
+      instance_types     = ["t3.medium"]
 
       iam_role_additional_policies = {
         amazonEFS = "arn:aws:iam::aws:policy/service-role/AmazonEFSCSIDriverPolicy"
         amazonEBS = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
       }
 
-      min_size     = 2
-      max_size     = 10
-      desired_size = 2
+      min_size     = 1
+      max_size     = 1
+      desired_size = 1
 
       labels = {
         nodegroup = "blue"
@@ -65,16 +65,16 @@ module "eks" {
 
       ami_type           = "AL2023_x86_64_STANDARD"
       kubernetes_version = var.eks_nodegroup_green_version
-      instance_types     = ["m5.xlarge"]
+      instance_types     = ["t3.medium"]
 
       iam_role_additional_policies = {
         amazonEFS = "arn:aws:iam::aws:policy/service-role/AmazonEFSCSIDriverPolicy"
         amazonEBS = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
       }
 
-      min_size     = 2
-      max_size     = 10
-      desired_size = 2
+      min_size     = 1
+      max_size     = 2
+      desired_size = 1
 
       # 🔥 prevent scheduling until ready
       taints = {
